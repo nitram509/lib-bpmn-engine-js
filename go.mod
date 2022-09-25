@@ -2,7 +2,7 @@ module github.com/nitram509/lib-bpmn-engine-js
 
 go 1.19
 
-require github.com/nitram509/lib-bpmn-engine v0.2.4
+require github.com/nitram509/lib-bpmn-engine v0.3.0-beta1
 
 require (
 	github.com/antonmedv/expr v1.9.0 // indirect
