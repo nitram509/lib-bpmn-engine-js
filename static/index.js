@@ -54,6 +54,8 @@ async function runWorkflow() {
     if (typeof processKey === 'string') {
         console.log("error loading bpmn: " + processKey);
     } else {
+        let box = $("#log");
+        box.val("");
         let ids = getTasksIds(bpmn.xml)
         ids.forEach(id => {
             e.NewTaskHandlerForId(id, jobHandler)
