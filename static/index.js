@@ -42,13 +42,8 @@
  * @param job {ActivatedJob}
  */
 function jobHandler(job) {
-    console.log("Key                      = " + job.GetKey());
-    console.log("ElementId                = " + job.GetElementId());
-    console.log("BpmnProcessId            = " + job.GetBpmnProcessId());
-    console.log("ProcessDefinitionKey     = " + job.GetProcessDefinitionKey());
-    console.log("ProcessDefinitionVersion = " + job.GetProcessDefinitionVersion());
-    console.log("CreatedAt                = " + job.GetCreatedAt());
-    job.Complete();
+    const code = flask.getCode();
+    eval(code);
 }
 
 
@@ -59,7 +54,35 @@ async function runWorkflow() {
     if (typeof processKey === 'string') {
         console.log("error loading bpmn: " + processKey);
     } else {
-        e.NewTaskHandlerForId("id", jobHandler)
+        let ids = getTasksIds(bpmn.xml)
+        ids.forEach(id => {
+            e.NewTaskHandlerForId(id, jobHandler)
+        })
         e.CreateAndRunInstance(processKey)
     }
+}
+
+/**
+ *
+ * @param xmlString
+ * @returns {[string]}
+ */
+function getTasksIds(xmlString) {
+    let parser = new DOMParser();
+    let xmlDoc = parser.parseFromString(xmlString, "text/xml");
+    let ids = [];
+    xmlDoc.childNodes.forEach(function (element) {
+        if (element.localName === 'definitions') {
+            element.childNodes.forEach(function (element) {
+                if (element.localName === 'process') {
+                    element.childNodes.forEach(function (element) {
+                        if (element.localName === 'serviceTask') {
+                            ids.push(element.getAttribute("id"))
+                        }
+                    });
+                }
+            });
+        }
+    });
+    return ids;
 }

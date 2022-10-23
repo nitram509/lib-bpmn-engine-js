@@ -34,3 +34,14 @@ html, body {
 #btn-run {
     margin-top: 20px
 }
+
+#task-handler-editor {
+    width: 97%;
+    height: 200px;
+}
+
+.codeflask {
+    height: inherit !important;
+    width: inherit !important;
+    border: 1px dotted silver;
+}
