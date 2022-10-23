@@ -20,13 +20,14 @@
   <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
   <![endif]-->
 
-  <script src="wasm_exec.js"></script>
-  <script>
+  <script type="application/javascript" src="wasm_exec.js"></script>
+  <script type="application/javascript">
     const go = new Go();
     WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then((result) => {
       go.run(result.instance);
     });
   </script>
+  <script type="application/javascript" src="lib-bpmn-engine-bindings.js"></script>
 </head>
 <body>
 
@@ -59,16 +60,7 @@
   });
 </script>
 
-<script type="application/javascript">
-  (function(){
-    let oldLog = console.log;
-    console.log = function (message) {
-      let box = $("#log");
-      box.val(box.val() + message + "\n");
-      oldLog.apply(console, arguments);
-    };
-  })();
-</script>
+<script type="application/javascript" src="index.js"></script>
 
 </body>
 </html>

@@ -3,7 +3,6 @@ package main
 import (
 	_ "embed"
 	"fmt"
-
 	"github.com/nitram509/lib-bpmn-engine/pkg/bpmn_engine"
 	"syscall/js"
 )
@@ -11,10 +10,30 @@ import (
 //go:embed "simple_task.bpmn"
 var simpleTaskBpmn []byte
 
+type jsBinding struct {
+	EngineName string `js:"engineName"`
+}
+
+var engines []bpmn_engine.BpmnEngineState
+
 func main() {
 	done := make(chan struct{}, 0)
 	js.Global().Set("runEngine", js.FuncOf(runEngine))
+	js.Global().Set("__newBpmnEngine", js.FuncOf(newBpmnEngine))
+	js.Global().Set("__engine__getName", js.FuncOf(engineGetName))
 	<-done
+}
+
+func newBpmnEngine(this js.Value, args []js.Value) interface{} {
+	idx := len(engines)
+	engine := bpmn_engine.New(fmt.Sprintf("engine-%d", idx))
+	engines = append(engines, engine)
+	return idx
+}
+
+func engineGetName(this js.Value, args []js.Value) interface{} {
+	idx := this.Int()
+	return engines[idx].GetName()
 }
 
 func runEngine(this js.Value, args []js.Value) interface{} {
