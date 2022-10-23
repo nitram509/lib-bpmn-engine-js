@@ -10,6 +10,20 @@
 })();
 
 /**
+ * @typedef NewBpmnEngine
+ * @type {function}
+ * @returns {BpmnEngine}
+ */
+
+/**
+ * @typedef BpmnEngine
+ * @type {object}
+ * @property {function(id:string, callback:function(ActivatedJob))} NewTaskHandlerForId
+ * @property {function(bpmn:string):number} LoadFromString loads BPMN returns processKey
+ * @property {function(processKey:number)} CreateAndRunInstance
+ */
+
+/**
  * @typedef ActivatedJob
  * @type {object}
  * @property {function:number} GetKey
@@ -19,7 +33,7 @@
  * @property {function:number} GetProcessDefinitionKey
  * @property {function:string} GetElementId
  * @property {function:Date} GetCreatedAt
- * @property {function(string)} Fail
+ * @property {function(reason:string)} Fail
  * @property {function} Complete
  */
 
@@ -37,8 +51,15 @@ function jobHandler(job) {
     job.Complete();
 }
 
-function doIt() {
+
+async function runWorkflow() {
     let e = NewBpmnEngine()
-    e.NewTaskHandlerForId("hello-world", jobHandler)
-    e.CreateAndRunInstance()
+    let bpmn = await bpmnModeler.saveXML({format: true});
+    let processKey = e.LoadFromString(bpmn.xml);
+    if (typeof processKey === 'string') {
+        console.log("error loading bpmn: " + processKey);
+    } else {
+        e.NewTaskHandlerForId("id", jobHandler)
+        e.CreateAndRunInstance(processKey)
+    }
 }

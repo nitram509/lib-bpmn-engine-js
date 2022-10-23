@@ -33,21 +33,27 @@ func main() {
 
 func newBpmnEngine(this js.Value, args []js.Value) interface{} {
 	engine := bpmn_engine.New(fmt.Sprintf("engine-%d", engineCounter))
-	engineWrapper := EngineWrapper{
+	ew := EngineWrapper{
 		engine: &engine,
 	}
-	process, _ := engine.LoadFromBytes(simpleTaskBpmn)
 	engineCounter++
 	obj := vert.ValueOf(jsBinding{Name: engine.GetName()})
 	obj.Set("GetName", js.FuncOf(func(this js.Value, args []js.Value) any {
 		return engine.GetName()
 	}))
-	obj.Set("CreateAndRunInstance", js.FuncOf(func(this js.Value, args []js.Value) any {
-		engine.CreateAndRunInstance(process.ProcessKey, nil)
-		return js.Undefined()
-	}))
-	obj.Set("NewTaskHandlerForId", js.FuncOf(engineWrapper.JsNewTaskHandlerForId))
+	obj.Set("CreateAndRunInstance", js.FuncOf(ew.CreateAndRunInstance))
+	obj.Set("LoadFromString", js.FuncOf(ew.JsLoadFromString))
+	obj.Set("NewTaskHandlerForId", js.FuncOf(ew.JsNewTaskHandlerForId))
 	return obj.JSValue()
+}
+
+func (ew EngineWrapper) JsLoadFromString(this js.Value, args []js.Value) any {
+	xmlString := args[0].String()
+	process, err := ew.engine.LoadFromBytes([]byte(xmlString))
+	if err != nil {
+		return js.ValueOf(false)
+	}
+	return js.ValueOf(process.ProcessKey)
 }
 
 func (ew EngineWrapper) JsNewTaskHandlerForId(this js.Value, args []js.Value) any {
@@ -57,6 +63,12 @@ func (ew EngineWrapper) JsNewTaskHandlerForId(this js.Value, args []js.Value) an
 		handler: jsHandler,
 	}
 	ew.engine.NewTaskHandler().Id(id).Handler(ajh.JsActivatedJobHandler)
+	return js.Undefined()
+}
+
+func (ew EngineWrapper) CreateAndRunInstance(this js.Value, args []js.Value) any {
+	processKey := int64(args[0].Float())
+	ew.engine.CreateAndRunInstance(processKey, nil)
 	return js.Undefined()
 }
 
