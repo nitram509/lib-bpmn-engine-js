@@ -2,7 +2,8 @@
 
 ## status
 
-**experimental**
+**experimental** playground is online
+https://nitram509.github.io/lib-bpmn-engine-js/
 
 ## build
 
