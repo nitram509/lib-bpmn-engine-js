@@ -13,5 +13,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.19'
-      - run: |
-          echo "test"
+      - name: "compile wasm"
+        run: |
+          GOOS=js GOARCH=wasm go build -o static/main.wasm .
+          cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" static/wasm_exec.js
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: static
