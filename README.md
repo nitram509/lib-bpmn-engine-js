@@ -5,6 +5,10 @@
 **experimental** playground is online
 https://nitram509.github.io/lib-bpmn-engine-js/
 
+## link
+
+The actual BPMN engine's sources are available here: https://github.com/nitram509/lib-bpmn-engine
+
 ## build
 
 ```shell
