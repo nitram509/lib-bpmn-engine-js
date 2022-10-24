@@ -15,3 +15,10 @@ The actual BPMN engine's sources are available here: https://github.com/nitram50
 GOOS=js GOARCH=wasm go build -o static/main.wasm .
 cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" static/wasm_exec.js
 ```
+
+## test
+
+```shell
+export PATH="$PATH:$(go env GOROOT)/misc/wasm"
+GOOS=js GOARCH=wasm go test ./...
+```
