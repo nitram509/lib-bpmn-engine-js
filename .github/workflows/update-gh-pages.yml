@@ -1,4 +1,4 @@
-name: update gh-pages
+name: update-gh-pages
 on:
   push:
     branches:
@@ -13,11 +13,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.19'
-      - name: "compile wasm"
+      - name: "Compile WASM"
         run: |
           GOOS=js GOARCH=wasm go build -o static/main.wasm .
           cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" static/wasm_exec.js
-      - name: Deploy 🚀
+      - name: "Deploy 🚀"
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: static
