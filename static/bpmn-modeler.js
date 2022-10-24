@@ -7,19 +7,6 @@ var bpmnModeler = new BpmnJS({
 });
 
 /**
- * Save diagram contents and print them to the console.
- */
-async function exportDiagram() {
-    try {
-        var result = await bpmnModeler.saveXML({ format: true });
-        alert('Diagram exported. Check the developer tools!');
-        console.log('DIAGRAM', result.xml);
-    } catch (err) {
-        console.error('could not save BPMN 2.0 diagram', err);
-    }
-}
-
-/**
  * Open diagram in our modeler instance.
  *
  * @param {String} bpmnXML diagram to display

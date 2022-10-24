@@ -25,13 +25,7 @@ html, body {
     stroke: rgba(66, 180, 21, 0.7) !important; /* color elements as red */
 }
 
-#btn-save {
-    position: fixed;
-    top: 20px;
-    left: 96px;
-}
-
-#btn-run {
+#btn-run, #btn-save {
     margin-top: 20px
 }
 

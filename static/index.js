@@ -9,6 +9,48 @@
     };
 })();
 
+function openSaveFileDialog(data, filename, mimetype) {
+    'use strict';
+
+    if (!data) return;
+
+    var blob = data.constructor !== Blob
+        ? new Blob([data], {type: mimetype || 'application/octet-stream'})
+        : data;
+
+    if (navigator.msSaveBlob) {
+        navigator.msSaveBlob(blob, filename);
+        return;
+    }
+
+    var lnk = document.createElement('a'),
+        url = window.URL,
+        objectURL;
+
+    if (mimetype) {
+        lnk.type = mimetype;
+    }
+
+    lnk.download = filename || 'untitled';
+    lnk.href = objectURL = url.createObjectURL(blob);
+    lnk.dispatchEvent(new MouseEvent('click'));
+    setTimeout(url.revokeObjectURL.bind(url, objectURL));
+}
+
+/**
+ * Save diagram contents and print them to the console.
+ */
+async function exportDiagram() {
+    'use strict';
+    try {
+        let result = await bpmnModeler.saveXML({format: true});
+        let filename = "diagram-" + new Date().getTime() + ".bpmn";
+        openSaveFileDialog(result.xml, filename, 'application/bpmn+xml');
+    } catch (err) {
+        console.error('could not save BPMN 2.0 diagram', err);
+    }
+}
+
 /**
  * @typedef NewBpmnEngine
  * @type {function}
