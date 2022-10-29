@@ -64,6 +64,6 @@ func functionWrapperTempl(d functionData) string {
 	}
 	b.WriteString("w.wrapped." + d.FunctionName + "(" + params + ")\n")
 	b.WriteString("return js.Undefined()\n")
-	b.WriteString("}\n\n")
+	b.WriteString("}\n \n")
 	return b.String()
 }
