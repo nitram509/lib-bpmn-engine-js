@@ -1,15 +1,11 @@
 package main
 
 import (
-	_ "embed"
 	"fmt"
 	"github.com/nitram509/lib-bpmn-engine/pkg/bpmn_engine"
 	"github.com/norunners/vert"
 	"syscall/js"
 )
-
-//go:embed "simple_task.bpmn"
-var simpleTaskBpmn []byte
 
 type jsBinding struct {
 	Name string `js:"name"`
@@ -33,10 +29,10 @@ func main() {
 
 func newBpmnEngine(this js.Value, args []js.Value) interface{} {
 	engine := bpmn_engine.New(fmt.Sprintf("engine-%d", engineCounter))
+	engineCounter++
 	ew := EngineWrapper{
 		engine: &engine,
 	}
-	engineCounter++
 	obj := vert.ValueOf(jsBinding{Name: engine.GetName()})
 	obj.Set("GetName", js.FuncOf(func(this js.Value, args []js.Value) any {
 		return engine.GetName()
