@@ -14,8 +14,31 @@ func wrap(t bpmn_engine.BpmnEngineState) BpmnEngineStateWrapper {
 		wrapped: &t,
 	}
 }
+func (w *BpmnEngineStateWrapper) JsRunOrContinueInstance(this js.Value, args []js.Value) any {
+	param0 := int64(args[0].Float())
+	w.wrapped.RunOrContinueInstance(param0)
+	return js.Undefined()
+}
+
 func (w *BpmnEngineStateWrapper) JsGetMessageSubscriptions(this js.Value, args []js.Value) any {
 	w.wrapped.GetMessageSubscriptions()
+	return js.Undefined()
+}
+
+func (w *BpmnEngineStateWrapper) JsFindProcessInstanceById(this js.Value, args []js.Value) any {
+	param0 := int64(args[0].Float())
+	w.wrapped.FindProcessInstanceById(param0)
+	return js.Undefined()
+}
+
+func (w *BpmnEngineStateWrapper) JsLoadFromFile(this js.Value, args []js.Value) any {
+	param0 := args[0].String()
+	w.wrapped.LoadFromFile(param0)
+	return js.Undefined()
+}
+
+func (w *BpmnEngineStateWrapper) JsGetTimersScheduled(this js.Value, args []js.Value) any {
+	w.wrapped.GetTimersScheduled()
 	return js.Undefined()
 }
 
