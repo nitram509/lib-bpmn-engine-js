@@ -22,3 +22,10 @@ cp "$(go env GOROOT)/misc/wasm/wasm_exec.js" static/wasm_exec.js
 export PATH="$PATH:$(go env GOROOT)/misc/wasm"
 GOOS=js GOARCH=wasm go test ./...
 ```
+
+## WiP: test code generator
+
+```shell
+cd cmd
+go run . -package=github.com/nitram509/lib-bpmn-engine/pkg/bpmn_engine -type=BpmnEngineState
+```
