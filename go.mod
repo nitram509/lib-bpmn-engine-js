@@ -3,7 +3,7 @@ module github.com/nitram509/lib-bpmn-engine-js
 go 1.19
 
 require (
-	github.com/nitram509/lib-bpmn-engine v0.3.0-beta1
+	github.com/nitram509/lib-bpmn-engine v0.3.0-beta2
 	github.com/norunners/vert v0.0.0-20211229045251-b4c39e2856da
 )
 

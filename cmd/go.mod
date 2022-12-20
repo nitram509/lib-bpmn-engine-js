@@ -3,7 +3,7 @@ module github.com/nitram509/wasm-bindings
 go 1.19
 
 require (
-	github.com/nitram509/lib-bpmn-engine v0.2.4
+	github.com/nitram509/lib-bpmn-engine v0.3.0-beta1
 	golang.org/x/tools v0.2.0
 )
 
